@@ -43,6 +43,10 @@ ng build --prod
 
 copyfiles -f dist/** src/main/resources/static
   - this copies the file for spring
+
+OR from intelliJ run >   "ng build & deploy PROD" command
+deploy the jar to EC2
+add the environment variable > SPRING_PROFILES_ACTIVE = production
 -------------------
 
 to  run the commands from scripts use "npm"

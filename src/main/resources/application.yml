@@ -1,5 +1,7 @@
 #optional file
-#custom port server.port=8000
+#custom port (to deploy it to AWS EC2 it has to run to port 5000 and EC2 is running on this port)
+server:
+  port: 5000
 
 #spring:
 #  thymeleaf:
@@ -14,7 +16,7 @@
 spring:
     profiles:
       active: development
-
+# for PROD in aws add env variable -Dspring.profiles.active=production
 #You can also create yml file / profile e.g. application-production.yml
 # triple hyphens acts as a divider between the profiles e.g.
 
