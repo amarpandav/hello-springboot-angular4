@@ -13,7 +13,7 @@
 #Mark active profile
 spring:
     profiles:
-      active: development
+      active: production
 
 #You can also create yml file / profile e.g. application-production.yml
 # triple hyphens acts as a divider between the profiles e.g.
