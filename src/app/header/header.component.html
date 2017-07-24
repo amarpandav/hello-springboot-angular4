@@ -1,0 +1,40 @@
+<header>
+  <nav class="navbar-inverse" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#navbar1">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" routerLink="/">HelloSpringbootAngular4</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <!-- for handburger menu we need "collapse in" styles -->
+      <div class="navbar-collapse collapse" id="navbar1">
+        <ul class="nav navbar-nav">
+          <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/">Home</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/users">users</a></li>
+
+        </ul>
+
+        <!--ul class="nav navbar-nav navbar-right">
+          <li routerLinkActive="active" *ngIf="isLoggedIn"><a routerLink="/" (click)="onLogout()">Logout</a></li>
+          <li routerLinkActive="active" *ngIf="!isLoggedIn"><a routerLink="/" (click)="onLogin()">Login</a></li>
+        </ul-->
+
+        <!--form class="navbar-form navbar-right">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search TODO">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form-->
+
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+</header>
