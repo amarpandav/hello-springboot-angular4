@@ -15,6 +15,8 @@ import {AppRoutingModule} from "./app-routing.module";
 import {MessageService} from "./shared/services/message.service";
 import {PageNotFoundComponent} from "./error-handling/page-not-found/page-not-found.component";
 import {NotAuthorizedComponent} from "./error-handling/not-authorized/not-authorized.component";
+import { AwsLambdaComponent } from './aws-lambda/aws-lambda.component';
+import {LambdaService} from "./shared/services/lambda.service";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {NotAuthorizedComponent} from "./error-handling/not-authorized/not-author
     HomeComponent,
     UsersComponent,
     PageNotFoundComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
+    AwsLambdaComponent
 
   ],
   imports: [
@@ -38,7 +41,8 @@ import {NotAuthorizedComponent} from "./error-handling/not-authorized/not-author
   providers: [
     UserService,
     AppAttributesService,
-    MessageService
+    MessageService,
+    LambdaService
   ],
   bootstrap: [AppComponent]
 })

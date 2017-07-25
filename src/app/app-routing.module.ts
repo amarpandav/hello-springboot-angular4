@@ -4,11 +4,14 @@ import {PageNotFoundComponent} from "./error-handling/page-not-found/page-not-fo
 import {NotAuthorizedComponent} from "./error-handling/not-authorized/not-authorized.component";
 import {UsersComponent} from "./users/users.component";
 import {HomeComponent} from "./home/home.component";
+import {AwsLambdaComponent} from "./aws-lambda/aws-lambda.component";
 
 const appRoutes:Routes = [
   //{path: '', redirectTo:"servers", pathMatch:"full"},
   {path: '', component: HomeComponent},
   {path: 'users', component: UsersComponent},
+  {path: 'lambda', component: AwsLambdaComponent},
+
 
   {path: 'page-not-found', component: PageNotFoundComponent},
   {path: 'not-authorized', component: NotAuthorizedComponent},
