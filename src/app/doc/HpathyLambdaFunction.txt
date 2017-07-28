@@ -1,0 +1,95 @@
+'use strict';
+
+console.log('Loading HpathyLambdaFunction() Lambda function');
+
+const doc = require('dynamodb-doc');
+
+const dynamo = new doc.DynamoDB();
+
+
+/**
+ * Demonstrates a simple HTTP endpoint using API Gateway. You have full
+ * access to the request and response payload, including headers and
+ * status code.
+ *
+ * To scan a DynamoDB table, make a GET request with the TableName as a
+ * query string parameter. To put, update, or delete an item, make a POST,
+ * PUT, or DELETE request respectively, passing in the payload to the
+ * DynamoDB API as a JSON body.
+ */
+exports.handler = (event, context, callback) => {
+  //console.log('Received event:', JSON.stringify(event, null, 2));
+
+  console.log('Received event:', JSON.stringify(event, null, 2));
+
+  const TABLE_NAME = "HpathyProduct";
+
+  const done = (err, res) => callback(null, {
+    statusCode: err ? '400' : '200',
+    headers: {
+      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS
+    },
+    body: err ? err.message : JSON.stringify(res)
+  });
+
+  switch (event.httpMethod) {
+    case 'GET':
+      //original -> dynamo.scan({ TableName: event.queryStringParameters.TableName }, done);
+      dynamo.scan({TableName: TABLE_NAME}, done);
+      break;
+
+    case 'POST':
+      console.log('Inside port of HpathyLambdaFunction() and event JSON is:', JSON.parse(event.body));
+
+      var params = {
+        TableName: "HpathyProduct",
+        Item: JSON.parse(event.body)
+      }
+
+      //Original -> dynamo.putItem(JSON.parse(event.body), done);
+      dynamo.putItem(params, done);
+      break;
+
+    case 'DELETE':
+      var params2 = {
+        TableName: "HpathyProduct",
+        Key: JSON.parse(event.body)
+      }
+      dynamo.deleteItem(params2, done);
+      break;
+
+
+    case 'PUT':
+      console.log('Inside PUT body is :', JSON.parse(event.body));
+      var jsonBody = JSON.parse(event.body);
+
+      console.log('Inside PUT id is:', jsonBody.id);
+      console.log('Inside PUT category is:', jsonBody.category);
+      console.log('Inside PUT minutes is :', jsonBody.minutes);
+      console.log('Inside PUT id in number is :', Number(jsonBody.id));
+
+      var params3 = {
+        TableName: "HpathyProduct",
+        Key: {"id": Number(jsonBody.id)},
+        UpdateExpression: "set #nameVar = :n, category=:c, minutes=:m, price=:p",
+        ExpressionAttributeValues: {
+          ":n": jsonBody.name,
+          ":c": jsonBody.category,
+          ":m": jsonBody.minutes,
+          ":p": Number(jsonBody.price)
+        },
+        ExpressionAttributeNames: {
+          '#nameVar': "name" // because name is a reserved keyword
+        },
+        ReturnValues: "UPDATED_NEW",
+
+      }
+      //Original dynamo.updateItem(JSON.parse(event.body), done);
+      dynamo.updateItem(params3, done);
+      break;
+
+    default:
+      done(new Error(`Unsupported method "${event.httpMethod}"`));
+  }
+};

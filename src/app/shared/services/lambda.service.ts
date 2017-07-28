@@ -61,4 +61,8 @@ export class LambdaService {
     return this.http.delete("https://09k3qaeu5a.execute-api.eu-central-1.amazonaws.com/prod/deletehpathyproduct", {body: param});
   }
 
+  updateHpathyProduct(hpathyProductToUpdate:HpathyProduct) {
+    return this.http.put("https://09k3qaeu5a.execute-api.eu-central-1.amazonaws.com/prod/updatehpathyproduct", hpathyProductToUpdate);
+  }
+
 }

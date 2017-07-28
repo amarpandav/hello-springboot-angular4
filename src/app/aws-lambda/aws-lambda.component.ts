@@ -18,8 +18,9 @@ export class AwsLambdaComponent implements OnInit {
 
   hpathyProduct:HpathyProduct = HpathyProduct.newInstance(); // new product
 
+  updateOperation:boolean;
 
-  constructor(private lambdaService:LambdaService, private messageService: MessageService) {
+  constructor(private lambdaService:LambdaService, private messageService:MessageService) {
   }
 
   ngOnInit() {
@@ -40,12 +41,21 @@ export class AwsLambdaComponent implements OnInit {
     );
   }
 
-  onCreateHpathyProduct() {
-    this.hpathyProduct.id = this.hpathyProducts.length+1; //In reality this should be uuid
+  onSaveHpathyProduct() {
+    if (!this.updateOperation) {
+      this.createProduct();
+    } else {
+      this.updateProduct();
+    }
+
+  }
+
+  private createProduct() {
+    this.hpathyProduct.id = this.hpathyProducts.length + 1; //In reality this should be uuid
 
     this.lambdaService.createHpathyProduct(this.hpathyProduct).subscribe(
       (response) => {
-        console.log("onCreateHpathyProduct response:"+response);
+        console.log("onCreateHpathyProduct response:" + response);
         this.messageService.info(JSON.stringify(this.hpathyProduct), "Saved successfully!");
         this.findHpathyProducts(); //Read the records again from DB
         this.hpathyProduct = HpathyProduct.newInstance();
@@ -57,15 +67,36 @@ export class AwsLambdaComponent implements OnInit {
     );
   }
 
-  onDeleteHpathyProduct(productIdToDelete: number) {
+  onDeleteHpathyProduct(productIdToDelete:number) {
     this.lambdaService.deleteHpathyProduct(productIdToDelete).subscribe(
       (response) => {
-        console.log("onDeleteHpathyProduct response:"+response);
+        console.log("onDeleteHpathyProduct response:" + response);
         this.messageService.info(JSON.stringify(response), "Product delete successfully!");
         this.findHpathyProducts(); //Read the records again from DB
       },
       (error) => {
         this.messageService.error(error, "Error in onDeleteHpathyProduct.");
+      }
+    );
+  }
+
+  onSelectProductForUpdate(productToUpdate:HpathyProduct) {
+    this.hpathyProduct = productToUpdate;
+    this.updateOperation = true;
+  }
+
+  updateProduct() {
+    this.lambdaService.updateHpathyProduct(this.hpathyProduct).subscribe(
+      (response) => {
+        console.log("onUpdateHpathyProduct response:" + response);
+        this.messageService.info(JSON.stringify(this.hpathyProduct), "Updated successfully!");
+        this.findHpathyProducts(); //Read the records again from DB
+        this.hpathyProduct = HpathyProduct.newInstance();
+        this.productForm.resetForm();
+        this.updateOperation = false;
+      },
+      (error) => {
+        this.messageService.error(error, "Error in onCreateHpathyProduct.");
       }
     );
   }
