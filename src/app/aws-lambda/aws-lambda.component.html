@@ -3,3 +3,96 @@
     <h2>{{lambdaMessage}}</h2>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-lg-12 col-md-12">
+
+    <div class="col-lg-4 col-md-4">
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>New Hpathy Product</h4></div>
+
+        <div class="panel-body">
+
+          <form (ngSubmit)="onCreateHpathyProduct()" #productForm="ngForm">
+            <!--{{diagnostic}};-->
+            <div>
+              <div class="form-group">
+                <label for="name">Product Name</label>
+                <input id="name" class="form-control" [(ngModel)]="hpathyProduct.name" name="name" #name="ngModel"
+                       required>
+
+                <span *ngIf="name.invalid && name.touched" class="alert alert-danger">Please enter Product Name</span>
+              </div>
+
+              <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" class="form-control" [(ngModel)]="hpathyProduct.category" name="category"
+                        #category="ngModel" required>
+                  <option disabled>Please select Category</option>
+                  <option value="Speciality">Speciality</option>
+                  <option value="Aurveda">Aurveda</option>
+                </select>
+                <span *ngIf="category.invalid && category.touched"
+                      class="alert alert-danger">Please select Category</span>
+              </div>
+
+              <div class="form-group">
+                <label for="minutes">Duration of service (in minutes)</label>
+                <input id="minutes" class="form-control" [(ngModel)]="hpathyProduct.minutes" name="minutes"
+                       #minutes="ngModel" required>
+                <span *ngIf="minutes.invalid && minutes.touched" class="alert alert-danger">Please enter Duration of service</span>
+              </div>
+
+              <div class="form-group">
+                <label for="price">Price (in CHF)</label>
+                <input id="price" class="form-control" [(ngModel)]="hpathyProduct.price" name="price" #price="ngModel"
+                       required>
+                <span *ngIf="price.invalid && price.touched" class="alert alert-danger">Please enter Price</span>
+              </div>
+
+            </div>
+            <button class="btn btn-primary" type="submit" [disabled]="productForm.invalid">Submit</button>
+            <button class="btn btn-primary" type="submit" [disabled]="!productForm.dirty" (click)="productForm.reset()">
+              Reset
+            </button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-8 col-md-8">
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Hpathy Products</h4></div>
+
+        <div class="panel-body">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Minutes</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let product of hpathyProducts">
+              <td>{{product.id}}</td>
+              <td>{{product.name}}</td>
+              <td>{{product.category}}</td>
+              <td>{{product.minutes}}</td>
+              <td>{{product.price}}</td>
+              <td><button id="delete" class="btn btn-primary" (click)="onDeleteHpathyProduct(product.id)">Delete</button> </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
