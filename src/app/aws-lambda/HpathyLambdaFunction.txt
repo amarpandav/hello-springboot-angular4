@@ -18,8 +18,6 @@ const dynamo = new doc.DynamoDB();
  * DynamoDB API as a JSON body.
  */
 exports.handler = (event, context, callback) => {
-  //console.log('Received event:', JSON.stringify(event, null, 2));
-
   console.log('Received event:', JSON.stringify(event, null, 2));
 
   const TABLE_NAME = "HpathyProduct";
@@ -35,49 +33,99 @@ exports.handler = (event, context, callback) => {
 
   switch (event.httpMethod) {
     case 'GET':
-      //original -> dynamo.scan({ TableName: event.queryStringParameters.TableName }, done);
-      dynamo.scan({TableName: TABLE_NAME}, done);
+      if(event.queryStringParameters){
+        //Search by queryStringParameters
+
+        //Example 1: Get item by id using KeyConditionExpression
+        var paramsGetItemsById = {
+          TableName: TABLE_NAME,
+          //KeyConditionExpression: "id = :id1 AND PostedBy BETWEEN :v2a AND :v2b",
+          KeyConditionExpression: "id = :id1",
+          ExpressionAttributeValues: {
+            ":id1": Number(event.queryStringParameters.id),
+            }
+        }
+        dynamo.query(paramsGetItemsById, done);
+        // Use query() method to retrieve specific data using KeyConditionExpression ONLY
+
+
+        /*
+        //Example 2: Get item by category using FilterExpression. (We can also mix KeyConditionExpression & FilterExpression)
+        var paramsGetItemsByCategory = {
+                  TableName: TABLE_NAME,
+                  FilterExpression: "category = :category",
+                  ExpressionAttributeValues: {
+                    ":category": 'Speciality'
+                    }
+                }
+        dynamo.scan(paramsGetItemsByCategory, done);
+        //use scan() if you use ONLY FilterExpression without KeyConditionExpression.
+        */
+
+        /*
+        //Example 3: Get item by id using Key
+        var paramsGetItem = {
+          TableName: TABLE_NAME,
+          Key: {"id": 1}
+        }
+        dynamo.getItem(paramsGetItem, done);
+        //Use getItem() if you use ONLY Key
+        */
+
+
+        //dynamo.query(paramsGet, done);
+
+      }else{
+      console.log('Query string not found');
+
+        var paramsGet = {
+          TableName: TABLE_NAME
+        }
+        //original -> dynamo.scan({ TableName: event.queryStringParameters.TableName }, done);
+        dynamo.scan(paramsGet, done); // Use scan() method to retrieve all data
+      }
       break;
 
     case 'POST':
       console.log('Inside port of HpathyLambdaFunction() and event JSON is:', JSON.parse(event.body));
 
-      var params = {
-        TableName: "HpathyProduct",
+      var paramsPost = {
+        TableName: TABLE_NAME,
         Item: JSON.parse(event.body)
       }
 
       //Original -> dynamo.putItem(JSON.parse(event.body), done);
-      dynamo.putItem(params, done);
+      dynamo.putItem(paramsPost, done);
       break;
 
     case 'DELETE':
-      var params2 = {
-        TableName: "HpathyProduct",
-        Key: JSON.parse(event.body)
+      var paramsDelete = {
+        TableName: TABLE_NAME,
+        Key: JSON.parse(event.body),
+        //ConditionExpression:"category <= :category", //use ConditionExpression for further restricting data
       }
-      dynamo.deleteItem(params2, done);
+      dynamo.deleteItem(paramsDelete, done);
       break;
 
 
     case 'PUT':
       console.log('Inside PUT body is :', JSON.parse(event.body));
-      var jsonBody = JSON.parse(event.body);
+      var inputParamsUpdate = JSON.parse(event.body);
 
-      console.log('Inside PUT id is:', jsonBody.id);
-      console.log('Inside PUT category is:', jsonBody.category);
-      console.log('Inside PUT minutes is :', jsonBody.minutes);
-      console.log('Inside PUT id in number is :', Number(jsonBody.id));
+      console.log('Inside PUT id is:', inputParamsUpdate.id);
+      console.log('Inside PUT category is:', inputParamsUpdate.category);
+      console.log('Inside PUT minutes is :', inputParamsUpdate.minutes);
+      console.log('Inside PUT id in number is :', Number(inputParamsUpdate.id));
 
-      var params3 = {
-        TableName: "HpathyProduct",
-        Key: {"id": Number(jsonBody.id)},
+      var paramsUpdate = {
+        TableName: TABLE_NAME,
+        Key: {"id": Number(inputParamsUpdate.id)},
         UpdateExpression: "set #nameVar = :n, category=:c, minutes=:m, price=:p",
         ExpressionAttributeValues: {
-          ":n": jsonBody.name,
-          ":c": jsonBody.category,
-          ":m": jsonBody.minutes,
-          ":p": Number(jsonBody.price)
+          ":n": inputParamsUpdate.name,
+          ":c": inputParamsUpdate.category,
+          ":m": inputParamsUpdate.minutes,
+          ":p": Number(inputParamsUpdate.price)
         },
         ExpressionAttributeNames: {
           '#nameVar': "name" // because name is a reserved keyword
@@ -86,7 +134,7 @@ exports.handler = (event, context, callback) => {
 
       }
       //Original dynamo.updateItem(JSON.parse(event.body), done);
-      dynamo.updateItem(params3, done);
+      dynamo.updateItem(paramsUpdate, done);
       break;
 
     default:

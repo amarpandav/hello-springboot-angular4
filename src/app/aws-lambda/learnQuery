@@ -1,0 +1,39 @@
+http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.NodeJs.html
+http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/quick-intro.html
+
+query(): method to retrieve specific data
+
+Use query() method to retrieve specific data using KeyConditionExpression ONLY
+
+----------------------------------------
+scan(): method to retrieve all data.
+If you use ONLY FilterExpression without KeyConditionExpression use scan()
+
+----------------------------------------
+ProjectionExpression: specifies the attributes you want in the scan result.
+
+
+----------------------------------------
+FilterExpression vs KeyConditionExpressionfor Query
+A filter expression cannot contain partition key or sort key attributes.
+You need to specify those attributes in the key condition expression, not the filter expression.
+The syntax for a filter expression is identical to that of a condition expression.
+
+If you need to further refine the Query results, you can optionally provide a filter expression. A filter expression determines which items within the Query results should be returned to you. All of the other results are discarded.
+
+A filter expression is applied after a Query finishes, but before the results are returned. Therefore, a Query will consume the same amount of read capacity, regardless of whether a filter expression is present.
+
+----------------------------------------
+ExpressionAttributeNames: use it for reserved key words
+
+
+----------------------------------------
+ExpressionAttributeValues: use it to set parameters
+
+
+----------------------------------------
+Auto increment a existing column value by 1:
+UpdateExpression: "set info.rating = info.rating + :val",
+ExpressionAttributeValues:{
+            ":val":1
+        }
