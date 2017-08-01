@@ -1,0 +1,118 @@
+----------------------------------------------------------------------------------
+for new-
+console.log(record.eventID); -> a637bbf48fcd6aee030fe9b3747ca52b
+        console.log(record.eventName); -> INSERT
+        console.log('DynamoDB Record: %j', record.dynamodb); ->
+        {
+            "ApproximateCreationDateTime": 1501429200,
+            "Keys": {
+                "id": {
+                    "N": "5"
+                }
+            },
+            "NewImage": {
+                "minutes": {
+                    "S": "60"
+                },
+                "price": {
+                    "S": "240"
+                },
+                "name": {
+                    "S": "Hello product"
+                },
+                "id": {
+                    "N": "5"
+                },
+                "category": {
+                    "S": "Aurveda"
+                }
+            },
+            "SequenceNumber": "20193000000000002291198094",
+            "SizeBytes": 57,
+            "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+----------------------------------------------------------------------------------
+for update-
+console.log(record.eventID); -> c70a4e3b53a69bdcde1367f41996ede6
+console.log(record.eventName); -> MODIFY
+console.log('DynamoDB Record: %j', record.dynamodb); ->
+
+2017-07-30T15:34:27.504Z	d463ec4a-56a8-4acd-b76b-449980c39b36	DynamoDB Record:
+{
+    "ApproximateCreationDateTime": 1501428840,
+    "Keys": {
+        "id": {
+            "N": "4"
+        }
+    },
+    "NewImage": {
+        "minutes": {
+            "S": "1"
+        },
+        "price": {
+            "S": "1"
+        },
+        "name": {
+            "S": "Kiran Pandav"
+        },
+        "id": {
+            "N": "4"
+        },
+        "category": {
+            "S": "Speciality"
+        }
+    },
+    "OldImage": {
+        "minutes": {
+            "S": "3"
+        },
+        "price": {
+            "S": "2"
+        },
+        "name": {
+            "S": "Amar Pandav"
+        },
+        "id": {
+            "N": "4"
+        },
+        "category": {
+            "S": "Aurveda"
+        }
+    },
+    "SequenceNumber": "20192700000000002291154248",
+    "SizeBytes": 104,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+}
+----------------------------------------------------------------------------------
+for delete-
+console.log(record.eventID); -> 331823748b255bdd34285a1e933fae09
+console.log(record.eventName); -> REMOVE
+console.log('DynamoDB Record: %j', record.dynamodb); ->
+{
+    "ApproximateCreationDateTime": 1501429920,
+    "Keys": {
+        "id": {
+            "N": "4"
+        }
+    },
+    "OldImage": {
+        "minutes": {
+            "S": "2"
+        },
+        "price": {
+            "S": "2"
+        },
+        "name": {
+            "S": "fsaf"
+        },
+        "id": {
+            "N": "4"
+        },
+        "category": {
+            "S": "Speciality"
+        }
+    },
+    "SequenceNumber": "20193100000000002291323355",
+    "SizeBytes": 48,
+    "StreamViewType": "NEW_AND_OLD_IMAGES"
+}

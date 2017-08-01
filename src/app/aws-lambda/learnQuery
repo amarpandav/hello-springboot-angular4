@@ -1,3 +1,18 @@
+Open questions ->
+uuid
+
+----------------------------------------
+data types ->
+date: e.g. created_at
+    : we can use String data type to represent a date or a timestamp
+    : we can use the Number data type to represent a date or a timestamp
+boolean: A Boolean type attribute can store either true or false.
+Enum:
+Binary:Binary type attributes can store any binary data, such as compressed text, encrypted data, or images.
+List: A list type attribute can store an ordered collection of values.Lists are enclosed in square brackets: [ ... ]
+      : FavoriteThings: ["Cookies", "Coffee", 3.14159]
+
+----------------------------------------
 http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.NodeJs.html
 http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/quick-intro.html
 
@@ -37,3 +52,57 @@ UpdateExpression: "set info.rating = info.rating + :val",
 ExpressionAttributeValues:{
             ":val":1
         }
+----------------------------------------
+check Lambda>Functions>HpathyProductSendEmail
+A DynamoDB stream is an ordered flow of information about changes to items in an Amazon DynamoDB table. When you enable a stream on a table, DynamoDB captures information about every modification to data items in the table.
+
+----------------------------------------
+UpdateItem ->
+In DynamoDB, you use the UpdateItem action to modify a single item. (If you want to modify multiple items, you must use multiple UpdateItem operations.)
+You must specify the Key attributes of the item to be modified, and an UpdateExpression to specify attribute values.
+
+UpdateItem replaces the entire item, rather than replacing individual attributes.
+
+UpdateItem behaves like an "upsert" operation: The item is updated if it exists in the table, but if not, a new item is added (inserted).
+
+----------------------------------------
+DeleteItem ->
+In DynamoDB, you use the DeleteItem action to delete data from a table, one item at a time. You must specify the item's primary key values. Here is an example:
+
+----------------------------------------
+
+DeleteTable -> to delete table
+
+----------------------------------------
+Comparison Operators
+BETWEEN
+IN
+AND
+OR
+NOT
+
+----------------------------------------
+comparator
+    =
+    <>
+    <
+    <=
+    >
+    >=
+----------------------------------------
+
+functions
+    attribute_exists (path) e.g. ConditionExpression: "attribute_exists(category)"
+    attribute_not_exists (path)
+    attribute_type (path, type)
+    begins_with (path, substr)
+    contains (path, operand)
+    size (path) -> Check whether the string Brand is less than or equal to 20 characters. size (Brand) <= :v_size. v_size is expression value of 20.
+
+----------------------------------------
+Update Expressions
+update-expression ::=
+    [ SET action [, action] ... ]
+    [ REMOVE action [, action] ...] -> Deleting Attributes From An Item
+    [ ADD action [, action] ... ]
+    [ DELETE action [, action] ...] -> Removing Elements From A Set

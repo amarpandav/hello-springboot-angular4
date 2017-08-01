@@ -69,18 +69,27 @@ exports.handler = (event, context, callback) => {
           Key: {"id": 1}
         }
         dynamo.getItem(paramsGetItem, done);
-        //Use getItem() if you use ONLY Key
+        //Use getItem() if you use ONLY Key. BatchGetItem() Retrieves up to 100 items from one or more tables
         */
 
-
-        //dynamo.query(paramsGet, done);
 
       }else{
       console.log('Query string not found');
 
+        //Example 1: select all - no filter
         var paramsGet = {
           TableName: TABLE_NAME
         }
+        /*
+        //Example 2: filter starts_with/ contains
+        var paramsGet = {
+          TableName: TABLE_NAME,
+          //FilterExpression: "begins_with(category, :val1)",
+          FilterExpression: "contains(category, :val1)",
+          ExpressionAttributeValues: {
+            ":val1": 'pecial',
+            }
+        }*/
         //original -> dynamo.scan({ TableName: event.queryStringParameters.TableName }, done);
         dynamo.scan(paramsGet, done); // Use scan() method to retrieve all data
       }
@@ -95,7 +104,7 @@ exports.handler = (event, context, callback) => {
       }
 
       //Original -> dynamo.putItem(JSON.parse(event.body), done);
-      dynamo.putItem(paramsPost, done);
+      dynamo.putItem(paramsPost, done); //BatchWriteItem() Writes up to 25 items to a table
       break;
 
     case 'DELETE':
@@ -104,7 +113,7 @@ exports.handler = (event, context, callback) => {
         Key: JSON.parse(event.body),
         //ConditionExpression:"category <= :category", //use ConditionExpression for further restricting data
       }
-      dynamo.deleteItem(paramsDelete, done);
+      dynamo.deleteItem(paramsDelete, done); //BatchWriteItem() Deletes up to 25 items from one or more tables.
       break;
 
 
@@ -120,6 +129,10 @@ exports.handler = (event, context, callback) => {
       var paramsUpdate = {
         TableName: TABLE_NAME,
         Key: {"id": Number(inputParamsUpdate.id)},
+        //ConditionExpression:"category <= :category", to further restrict items
+        //ConditionExpression: "attribute_exists(category)", delete the item if category column exists
+        //ConditionExpression: "attribute_not_exists(category)"
+        //ConditionExpression: "(ProductCategory IN (:cat1, :cat2)) and (Price between :lo and :hi)"
         UpdateExpression: "set #nameVar = :n, category=:c, minutes=:m, price=:p",
         ExpressionAttributeValues: {
           ":n": inputParamsUpdate.name,
