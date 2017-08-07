@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ng serve DEV" type="js.build_tools.npm" factoryName="npm">
+  <configuration default="false" name="ng build &amp; deploy PROD" type="js.build_tools.npm" factoryName="npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="serve" />
+      <script value="build" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
