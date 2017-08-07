@@ -76,20 +76,17 @@ exports.handler = (event, context, callback) => {
       }else{
       console.log('Query string not found');
 
-        //Example 1: select all - no filter
-        var paramsGet = {
+        /*var paramsGet = {
           TableName: TABLE_NAME
-        }
-        /*
-        //Example 2: filter starts_with/ contains
+        }*/
         var paramsGet = {
           TableName: TABLE_NAME,
           //FilterExpression: "begins_with(category, :val1)",
           FilterExpression: "contains(category, :val1)",
           ExpressionAttributeValues: {
-            ":val1": 'pecial',
+            ":val1": 'yurve',
             }
-        }*/
+        }
         //original -> dynamo.scan({ TableName: event.queryStringParameters.TableName }, done);
         dynamo.scan(paramsGet, done); // Use scan() method to retrieve all data
       }
